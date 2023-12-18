@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <p> AccelerationX:</p>
+    <p id="id1"></p>
+    <p> AccelerationY:</p>
+    <p id="id2"></p>
+    <p> AccelerationZ:</p>
+    <p id="id3"></p>
+    <script>
+
+        window.addEventListener("devicemotion", function(e){
+
+            xAcceleration = e.acceleration.x;
+            yAcceleration = e.acceleration.y;
+            zAcceleration = e.acceleration.z;
+
+            document.getElementById("id1").innerHTML = xAcceleration.toString();
+            document.getElementById("id2").innerHTML = xAcceleration.toString();
+            document.getElementById("id2").innerHTML = xAcceleration.toString();
+ 
+        }, true);
+        
+
+    </script>
+</body>
+</html>
