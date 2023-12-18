@@ -9,6 +9,7 @@
 
         body{
             background: black;
+            overflow: hidden;
         }
 
         p{
@@ -21,13 +22,15 @@
             background: green;
             border: none;
             font-size: large;
+            width: 25vw;
+            height: 10vh;
         }
 
         .button:hover{
             background: darkgreen;
         }
 
-        #keyboard, #controls, #labels, #output{
+        #keyboard, #controls, #output{
             
             display: flex;
             margin: 3vw;
@@ -49,25 +52,23 @@
             height: 5vh;
         }
 
+        #labels{
+            margin: 3vw;
+            width: 94vw;
+        }
+
     
     </style>
 </head>
 <body>
 
     <div id="labels">
-
-        <div>
-            <p> a(x): <p id="id1"></p></p> 
-            <p> a(y): <p id="id2"></p></p> 
-            <p> a(z): <p id="id3"></p></p> 
-        </div>
-
-        <div>
-            <p> alpha: <p id="id4"></p></p> 
-            <p> beta: <p id="id5"></p></p> 
-            <p> gamma: <p id="id6"></p></p>
-        </div>
-        
+        <p> a(x): <p id="id1"></p></p> 
+        <p> a(y): <p id="id2"></p></p> 
+        <p> a(z): <p id="id3"></p></p> 
+        <p> alpha: <p id="id4"></p></p> 
+        <p> beta: <p id="id5"></p></p> 
+        <p> gamma: <p id="id6"></p></p>
         <p> time:</p>
         <p id="id7">00:00:00</p>
     </div>
@@ -80,21 +81,6 @@
             <button id="btn3" class="button">3</button>
         </div>
 
-        <div>
-
-            <button id="btn4" class="button">4</button>
-            <button id="btn5" class="button">5</button>
-            <button id="btn6" class="button">6</button>
-
-        </div>
-        
-        <div>
-
-            <button id="btn7" class="button">7</button>
-            <button id="btn8" class="button">8</button>
-            <button id="btn9" class="button">9</button>
-
-        </div>
 
     </div>
 
