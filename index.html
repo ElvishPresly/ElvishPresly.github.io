@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <p id = "id4"> AccelerationX:</p>
+    <p> AccelerationX:</p>
     <p id="id1"></p>
     <p> AccelerationY:</p>
     <p id="id2"></p>
@@ -15,9 +15,9 @@
     <p id="id3"></p>
     <script>
 
-        document.getElementById("id4").innerHTML = 'zhopa';
+        document.addEventListener("devicemotion", function(e){
 
-        window.addEventListener("devicemotion", function(e){
+            alert('motion');
 
             xAcceleration = e.acceleration.x;
             yAcceleration = e.acceleration.y;
