@@ -24,6 +24,7 @@
             font-size: large;
             width: 25vw;
             height: 10vh;
+            margin: 3vw;
         }
 
         .button:hover{
@@ -57,26 +58,25 @@
             width: 94vw;
         }
 
-    
     </style>
 </head>
 <body>
 
     <div id="labels">
-        <p id="id1"></p>
-        <p id="id2"></p>
-        <p id="id3"></p>
-        <p id="id4"></p>
-        <p id="id5"></p>
-        <p id="id6"></p>
+        <p id="id1">a(x):</p>
+        <p id="id2">a(y):</p>
+        <p id="id3">a(z):</p>
+        <p id="id4">alpha:</p>
+        <p id="id5">beta:</p>
+        <p id="id6">gamma:</p>
     </div>
 
     <div id="keyboard">
 
         <div>
-            <button id="btn1" class="button">1</button>
-            <button id="btn2" class="button">2</button>
-            <button id="btn3" class="button">3</button>
+            <button id="btn1" class="button" onclick="saveparam(1);">1</button>
+            <button id="btn2" class="button" onclick="saveparam(2);">2</button>
+            <button id="btn3" class="button" onclick="saveparam(3);">3</button>
         </div>
 
 
@@ -93,6 +93,9 @@
     </div>
 
     <script>
+
+        const tarea = document.getElementById("outputid");
+        let bigStr = "";
 
         window.addEventListener("devicemotion", function(e){
 
@@ -119,8 +122,6 @@
  
         }, true);
 
-
-
         function requestMotionPermission(){
             DeviceMotionEvent.requestPermission()
             .then(response => {
@@ -132,6 +133,13 @@
             .catch(console.error)
         }
         
+        function saveparam(bnum){
+
+            bigStr = bigStr+"[btn:"+bnum.toString()+",alpha:"+document.getElementById("id4").innerHTML.toString()
+            +",beta:"+document.getElementById("id5").innerHTML.toString()+ "gamma:"+document.getElementById("id6").innerHTML.toString()+
+            "ax:"+document.getElementById("id1").innerHTML.toString()+ "bx:" + document.getElementById("id2").innerHTML.toString()+ "zx:" +
+            document.getElementById("id3").innerHTML.toString()+"],";
+        }
 
     </script>
 </body>
