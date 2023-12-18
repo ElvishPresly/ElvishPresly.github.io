@@ -4,23 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+
+        body{
+            background: black;
+        }
+
+        p{
+            color: green;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .button{
+            font-family: 'Courier New', Courier, monospace;
+            background: green;
+            border: none;
+            font-size: large;
+        }
+
+        .button:hover{
+            background: darkgreen;
+        }
+
+        #keyboard, #controls, #labels, #output{
+
+            display: flex;
+            justify-content: space-between;
+            margin: 3vw;
+    
+        }
+
+        #outputid{
+            background-color: green;
+            border: none;
+            width: 94vw;
+            
+        }
+
+        #startbutton{
+            width: 94vw;
+            height: 5vh;
+        }
+
+    </style>
 </head>
 <body>
 
-    <p> AccelerationX:</p>
-    <p id="id1"></p>
-    <p> AccelerationY:</p>
-    <p id="id2"></p>
-    <p> AccelerationZ:</p>
-    <p id="id3"></p>
-    <p> Alpha:</p>
-    <p id="id4"></p>
-    <p> Beta:</p>
-    <p id="id5"></p>
-    <p> Gamma:</p>
-    <p id="id6"></p>
+    <div id="labels">
+        <p> AccelerationX:</p>
+        <p id="id1"></p>
+        <p> AccelerationY:</p>
+        <p id="id2"></p>
+        <p> AccelerationZ:</p>
+        <p id="id3"></p>
+        <p> Alpha:</p>
+        <p id="id4"></p>
+        <p> Beta:</p>
+        <p id="id5"></p>
+        <p> Gamma:</p>
+        <p id="id6"></p>
+        <p>Time:</p>
+        <p id="id7">00:00:00</p>
+    </div>
 
-    <button onclick="requestMotionPermission();">start demo</button>
+    <div id="keyboard">
+
+        <button id="btn1" class="button">1</button>
+        <button id="btn2" class="button">2</button>
+        <button id="btn3" class="button">3</button>
+        <button id="btn4" class="button">4</button>
+        <button id="btn5" class="button">5</button>
+        <button id="btn6" class="button">7</button>
+        <button id="btn7" class="button">7</button>
+        <button id="btn8" class="button">8</button>
+        <button id="btn9" class="button">9</button>
+        <button id="btn0" class="button">0</button>
+
+    </div>
+
+    <div id="controls">
+        <button onclick="requestMotionPermission();" id="startbutton" class="button">start</button>
+    </div>
+
+    <div id="output">
+
+        <textarea name="output" id="outputid" cols="30" rows="10">rfnr</textarea>
+
+    </div>
+
     <script>
 
         window.addEventListener("devicemotion", function(e){
@@ -35,6 +107,7 @@
  
         }, true);
         
+
         window.addEventListener("deviceorientation", function(e){
 
             alpha = e.alpha;
@@ -47,6 +120,8 @@
  
         }, true);
 
+
+
         function requestMotionPermission(){
             DeviceMotionEvent.requestPermission()
             .then(response => {
@@ -57,6 +132,7 @@
             })
             .catch(console.error)
         }
+        
 
     </script>
 </body>
