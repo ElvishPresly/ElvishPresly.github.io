@@ -19,8 +19,6 @@
 
         window.addEventListener("devicemotion", function(e){
 
-            alert('motion');
-
             xAcceleration = e.acceleration.x;
             yAcceleration = e.acceleration.y;
             zAcceleration = e.acceleration.z;
@@ -42,6 +40,7 @@
             })
             .catch(console.error)
         }
+        
 
     </script>
 </body>
