@@ -63,14 +63,12 @@
 <body>
 
     <div id="labels">
-        <p> a(x): <p id="id1"></p></p> 
-        <p> a(y): <p id="id2"></p></p> 
-        <p> a(z): <p id="id3"></p></p> 
-        <p> alpha: <p id="id4"></p></p> 
-        <p> beta: <p id="id5"></p></p> 
-        <p> gamma: <p id="id6"></p></p>
-        <p> time:</p>
-        <p id="id7">00:00:00</p>
+        <p id="id1"></p>
+        <p id="id2"></p>
+        <p id="id3"></p>
+        <p id="id4"></p>
+        <p id="id5"></p>
+        <p id="id6"></p>
     </div>
 
     <div id="keyboard">
@@ -102,9 +100,9 @@
             yAcceleration = e.acceleration.y;
             zAcceleration = e.acceleration.z;
 
-            document.getElementById("id1").innerHTML = xAcceleration.toString();
-            document.getElementById("id2").innerHTML = xAcceleration.toString();
-            document.getElementById("id3").innerHTML = xAcceleration.toString();
+            document.getElementById("id1").innerHTML =  "a(x):" + xAcceleration.toString();
+            document.getElementById("id2").innerHTML =  "a(y):" + xAcceleration.toString();
+            document.getElementById("id3").innerHTML =  "a(z):" + xAcceleration.toString();
  
         }, true);
         
@@ -115,9 +113,9 @@
             beta = e.beta;
             gamma = e.gamma;
 
-            document.getElementById("id4").innerHTML = alpha.toString();
-            document.getElementById("id5").innerHTML = beta.toString();
-            document.getElementById("id6").innerHTML = gamma.toString();
+            document.getElementById("id4").innerHTML = "alpha:" + alpha.toString();
+            document.getElementById("id5").innerHTML = "beta:"  +  beta.toString();
+            document.getElementById("id6").innerHTML = "gamma:" + gamma.toString();
  
         }, true);
 
