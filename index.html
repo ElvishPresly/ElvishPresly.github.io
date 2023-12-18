@@ -28,11 +28,12 @@
         }
 
         #keyboard, #controls, #labels, #output{
-
+            
             display: flex;
-            justify-content: space-between;
             margin: 3vw;
             height: 15vh;
+            width: 94vw;
+            justify-content: space-around;
     
         }
 
@@ -54,28 +55,46 @@
 <body>
 
     <div id="labels">
-        <p> a(x): <p id="id1"></p></p> 
-        <p> a(y): <p id="id2"></p></p> 
-        <p> a(z): <p id="id3"></p></p> 
-        <p> alpha: <p id="id4"></p></p> 
-        <p> beta: <p id="id5"></p></p> 
-        <p> gamma: <p id="id6"></p></p>
+
+        <div>
+            <p> a(x): <p id="id1"></p></p> 
+            <p> a(y): <p id="id2"></p></p> 
+            <p> a(z): <p id="id3"></p></p> 
+        </div>
+
+        <div>
+            <p> alpha: <p id="id4"></p></p> 
+            <p> beta: <p id="id5"></p></p> 
+            <p> gamma: <p id="id6"></p></p>
+        </div>
+        
         <p> time:</p>
         <p id="id7">00:00:00</p>
     </div>
 
     <div id="keyboard">
 
-        <button id="btn1" class="button">1</button>
-        <button id="btn2" class="button">2</button>
-        <button id="btn3" class="button">3</button>
-        <button id="btn4" class="button">4</button>
-        <button id="btn5" class="button">5</button>
-        <button id="btn6" class="button">7</button>
-        <button id="btn7" class="button">7</button>
-        <button id="btn8" class="button">8</button>
-        <button id="btn9" class="button">9</button>
-        <button id="btn0" class="button">0</button>
+        <div>
+            <button id="btn1" class="button">1</button>
+            <button id="btn2" class="button">2</button>
+            <button id="btn3" class="button">3</button>
+        </div>
+
+        <div>
+
+            <button id="btn4" class="button">4</button>
+            <button id="btn5" class="button">5</button>
+            <button id="btn6" class="button">6</button>
+
+        </div>
+        
+        <div>
+
+            <button id="btn7" class="button">7</button>
+            <button id="btn8" class="button">8</button>
+            <button id="btn9" class="button">9</button>
+
+        </div>
 
     </div>
 
