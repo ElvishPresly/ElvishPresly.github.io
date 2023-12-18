@@ -135,9 +135,9 @@
         
         function saveparam(bnum){
 
-            bigStr = bigStr+"[btn:"+bnum.toString()+",alpha:"+document.getElementById("id4").innerHTML.toString()
-            +",beta:"+document.getElementById("id5").innerHTML.toString()+ "gamma:"+document.getElementById("id6").innerHTML.toString()+
-            "ax:"+document.getElementById("id1").innerHTML.toString()+ "bx:" + document.getElementById("id2").innerHTML.toString()+ "zx:" +
+            bigStr = bigStr+"[btn:"+bnum.toString()+","+document.getElementById("id4").innerHTML.toString()
+            +","+document.getElementById("id5").innerHTML.toString()+","+document.getElementById("id6").innerHTML.toString()+
+            ","+document.getElementById("id1").innerHTML.toString()+","+document.getElementById("id2").innerHTML.toString()+","+
             document.getElementById("id3").innerHTML.toString()+"],";
 
             tarea.innerHTML = bigStr;
