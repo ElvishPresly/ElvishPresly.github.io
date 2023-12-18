@@ -8,13 +8,13 @@
 <body>
 
     <p> AccelerationX:</p>
-    <p id="id1">X</p>
+    <p id="id1"></p>
     <p> AccelerationY:</p>
-    <p id="id2">Y</p>
+    <p id="id2"></p>
     <p> AccelerationZ:</p>
-    <p id="id3">Z</p>
+    <p id="id3"></p>
 
-    <button onclick="alert('demo started');">start demo</button>
+    <button onclick="requestMotionPermission();">start demo</button>
     <script>
 
         window.addEventListener("devicemotion", function(e){
@@ -30,7 +30,18 @@
             document.getElementById("id2").innerHTML = xAcceleration.toString();
  
         }, true);
-        
+
+        function requestMotionPermission(){
+            DeviceMotionEvent.requestPermission()
+            .then(response => {
+                if (response == 'granted') {
+                    window.addEventListener('devicemotion', (e) => {
+                        alert('access granted')
+                    })
+                }
+            })
+            .catch(console.error)
+        }
 
     </script>
 </body>
