@@ -1,148 +1,162 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Сбор данных</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
 
-    <style>
+    #buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      grid-gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
 
-        body{
-            background: black;
-            overflow: hidden;
-        }
+    .num-btn {
+      font-size: 24px;
+      padding: 20px;
+      background-color: #f0f0f0;
+      border: 2px solid #999;
+      border-radius: 10px;
+      user-select: none;
+    }
 
-        p{
-            color: green;
-            font-family: 'Courier New', Courier, monospace;
-        }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin: 10px;
+    }
 
-        .button{
-            font-family: 'Courier New', Courier, monospace;
-            background: green;
-            border: none;
-            font-size: large;
-            width: 25vw;
-            height: 10vh;
-            margin: 2vw;
-        }
-
-        .button:hover{
-            background: darkgreen;
-        }
-
-        #keyboard, #controls, #output{
-            
-            display: flex;
-            margin: 3vw;
-            height: 15vh;
-            width: 94vw;
-            justify-content: space-around;
-    
-        }
-
-        #outputid{
-            background-color: green;
-            border: none;
-            width: 94vw;
-            
-        }
-
-        #startbutton{
-            width: 94vw;
-            height: 5vh;
-        }
-
-        #labels{
-            margin: 3vw;
-            width: 94vw;
-        }
-
-    </style>
+    #counter {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
 
-    <div id="labels">
-        <p id="id1">a(x):</p>
-        <p id="id2">a(y):</p>
-        <p id="id3">a(z):</p>
-        <p id="id4">alpha:</p>
-        <p id="id5">beta:</p>
-        <p id="id6">gamma:</p>
-    </div>
+  <h1>Сбор данных касаний</h1>
+  <button id="startBtn">Начать сессию</button>
+  <button id="downloadBtn" disabled>Скачать CSV</button>
+  <div id="counter">Нажатий: 0</div>
 
-    <div id="keyboard">
+  <div id="buttons"></div>
 
-        <div>
-            <button id="btn1" class="button" onclick="saveparam(1);">1</button>
-            <button id="btn2" class="button" onclick="saveparam(2);">2</button>
-            <button id="btn3" class="button" onclick="saveparam(3);">3</button>
-        </div>
+  <script>
+    const buttonsDiv = document.getElementById("buttons");
+    const startBtn = document.getElementById("startBtn");
+    const downloadBtn = document.getElementById("downloadBtn");
+    const counterDiv = document.getElementById("counter");
 
+    const digits = ['1','2','3','4','5','6','7','8','9','0'];
+    let isRecording = false;
+    let touchCounter = 0;
+    let data = [];
+    let touchStartTime = {};
+    let latestSensors = {
+      acceleration: { x: 0, y: 0, z: 0 },
+      rotation: { alpha: 0, beta: 0, gamma: 0 }
+    };
 
-    </div>
+    // Генерация кнопок
+    digits.forEach(d => {
+      const btn = document.createElement("div");
+      btn.className = "num-btn";
+      btn.textContent = d;
+      btn.dataset.digit = d;
+      buttonsDiv.appendChild(btn);
 
-    <div id="controls">
-        <button onclick="requestMotionPermission();" id="startbutton" class="button">start</button>
-    </div>
+      btn.addEventListener("touchstart", (e) => {
+        if (!isRecording) return;
+        const touch = e.changedTouches[0];
+        const id = touch.identifier;
+        touchStartTime[id] = {
+          time: performance.now(),
+          x: touch.clientX,
+          y: touch.clientY,
+          force: touch.force || 0
+        };
+      });
 
-    <div id="output">
+      btn.addEventListener("touchend", (e) => {
+        if (!isRecording) return;
+        const touch = e.changedTouches[0];
+        const id = touch.identifier;
+        const start = touchStartTime[id];
+        if (!start) return;
 
-        <textarea name="output" id="outputid" cols="30" rows="10">rfnr</textarea>
+        const endTime = performance.now();
+        const duration = endTime - start.time;
 
-    </div>
+        const row = {
+          timestamp: new Date().toISOString(),
+          digit: d,
+          x: touch.clientX,
+          y: touch.clientY,
+          startX: start.x,
+          startY: start.y,
+          force: touch.force || 0,
+          duration: Math.round(duration),
+          accX: latestSensors.acceleration.x.toFixed(3),
+          accY: latestSensors.acceleration.y.toFixed(3),
+          accZ: latestSensors.acceleration.z.toFixed(3),
+          rotAlpha: latestSensors.rotation.alpha.toFixed(3),
+          rotBeta: latestSensors.rotation.beta.toFixed(3),
+          rotGamma: latestSensors.rotation.gamma.toFixed(3)
+        };
 
-    <script>
+        data.push(row);
+        touchCounter++;
+        counterDiv.textContent = `Нажатий: ${touchCounter}`;
+      });
+    });
 
-        const tarea = document.getElementById("outputid");
-        let bigStr = "";
+    // Сенсоры
+    window.addEventListener("devicemotion", (e) => {
+      if (e.acceleration) {
+        latestSensors.acceleration = e.acceleration;
+      }
+    });
 
-        window.addEventListener("devicemotion", function(e){
+    window.addEventListener("deviceorientation", (e) => {
+      latestSensors.rotation = {
+        alpha: e.alpha,
+        beta: e.beta,
+        gamma: e.gamma
+      };
+    });
 
-            xAcceleration = e.acceleration.x;
-            yAcceleration = e.acceleration.y;
-            zAcceleration = e.acceleration.z;
+    startBtn.addEventListener("click", () => {
+      isRecording = true;
+      data = [];
+      touchCounter = 0;
+      counterDiv.textContent = "Нажатий: 0";
+      downloadBtn.disabled = false;
+      alert("Сессия начата. Нажимайте на цифры.");
+    });
 
-            document.getElementById("id1").innerHTML =  "a(x):" + xAcceleration.toString();
-            document.getElementById("id2").innerHTML =  "a(y):" + yAcceleration.toString();
-            document.getElementById("id3").innerHTML =  "a(z):" + zAcceleration.toString();
- 
-        }, true);
-        
+    downloadBtn.addEventListener("click", () => {
+      if (data.length === 0) return;
+      const headers = Object.keys(data[0]);
+      const rows = data.map(row => headers.map(h => row[h]).join(","));
+      const csv = [headers.join(",")].concat(rows).join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
 
-        window.addEventListener("deviceorientation", function(e){
-
-            alpha = e.alpha;
-            beta = e.beta;
-            gamma = e.gamma;
-
-            document.getElementById("id4").innerHTML = "alpha:" + alpha.toString();
-            document.getElementById("id5").innerHTML = "beta:"  +  beta.toString();
-            document.getElementById("id6").innerHTML = "gamma:" + gamma.toString();
- 
-        }, true);
-
-        function requestMotionPermission(){
-            DeviceMotionEvent.requestPermission()
-            .then(response => {
-                if (response == 'granted') {
-                    window.addEventListener('devicemotion', (e) => {
-                    })
-                }
-            })
-            .catch(console.error)
-        }
-        
-        function saveparam(bnum){
-
-            bigStr = bigStr+"[btn:"+bnum.toString()+","+document.getElementById("id4").innerHTML.toString()
-            +","+document.getElementById("id5").innerHTML.toString()+","+document.getElementById("id6").innerHTML.toString()+
-            ","+document.getElementById("id1").innerHTML.toString()+","+document.getElementById("id2").innerHTML.toString()+","+
-            document.getElementById("id3").innerHTML.toString()+"],";
-
-            tarea.innerHTML = bigStr;
-        }
-
-    </script>
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `touch_data_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  </script>
 </body>
 </html>
