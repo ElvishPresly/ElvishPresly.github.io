@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Сбор данных</title>
+  <title>Сбор данных касаний</title>
   <style>
     body {
       font-family: sans-serif;
@@ -65,6 +65,41 @@
       rotation: { alpha: 0, beta: 0, gamma: 0 }
     };
 
+    function handleMotion(e) {
+      if (e.acceleration) {
+        latestSensors.acceleration = e.acceleration;
+      }
+    }
+
+    function handleOrientation(e) {
+      latestSensors.rotation = {
+        alpha: e.alpha,
+        beta: e.beta,
+        gamma: e.gamma
+      };
+    }
+
+    async function requestSensorPermission() {
+      if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
+        try {
+          const response = await DeviceMotionEvent.requestPermission();
+          if (response === "granted") {
+            window.addEventListener("devicemotion", handleMotion);
+            window.addEventListener("deviceorientation", handleOrientation);
+            alert("Доступ к сенсорам разрешён");
+          } else {
+            alert("Доступ к сенсорам отклонён");
+          }
+        } catch (error) {
+          console.error("Ошибка при запросе доступа к сенсорам:", error);
+        }
+      } else {
+        // Android и старые iOS не требуют разрешения
+        window.addEventListener("devicemotion", handleMotion);
+        window.addEventListener("deviceorientation", handleOrientation);
+      }
+    }
+
     // Генерация кнопок
     digits.forEach(d => {
       const btn = document.createElement("div");
@@ -104,12 +139,12 @@
           startY: start.y,
           force: touch.force || 0,
           duration: Math.round(duration),
-          accX: latestSensors.acceleration.x.toFixed(3),
-          accY: latestSensors.acceleration.y.toFixed(3),
-          accZ: latestSensors.acceleration.z.toFixed(3),
-          rotAlpha: latestSensors.rotation.alpha.toFixed(3),
-          rotBeta: latestSensors.rotation.beta.toFixed(3),
-          rotGamma: latestSensors.rotation.gamma.toFixed(3)
+          accX: latestSensors.acceleration.x?.toFixed(3) || 0,
+          accY: latestSensors.acceleration.y?.toFixed(3) || 0,
+          accZ: latestSensors.acceleration.z?.toFixed(3) || 0,
+          rotAlpha: latestSensors.rotation.alpha?.toFixed(3) || 0,
+          rotBeta: latestSensors.rotation.beta?.toFixed(3) || 0,
+          rotGamma: latestSensors.rotation.gamma?.toFixed(3) || 0
         };
 
         data.push(row);
@@ -118,22 +153,8 @@
       });
     });
 
-    // Сенсоры
-    window.addEventListener("devicemotion", (e) => {
-      if (e.acceleration) {
-        latestSensors.acceleration = e.acceleration;
-      }
-    });
-
-    window.addEventListener("deviceorientation", (e) => {
-      latestSensors.rotation = {
-        alpha: e.alpha,
-        beta: e.beta,
-        gamma: e.gamma
-      };
-    });
-
-    startBtn.addEventListener("click", () => {
+    startBtn.addEventListener("click", async () => {
+      await requestSensorPermission();
       isRecording = true;
       data = [];
       touchCounter = 0;
